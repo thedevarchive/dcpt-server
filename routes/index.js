@@ -45,7 +45,7 @@ router.get("/api/question", async (req, res) => {
 
 /* GET all answers based on question ID */ 
 router.get("/api/answer/:questionId", async (req, res) => {
-  const answers = await req.db.from("answers").select("answer_text").where("question_id", "=", req.params.questionId);
+  const answers = await req.db.from("answers").select("letter_of_choice", "answer_text").where("question_id", "=", req.params.questionId);
   res.json({answers});
 });
 
