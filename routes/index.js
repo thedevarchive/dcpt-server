@@ -34,7 +34,6 @@ router.get("/results", (req, res) => {
   TODO: 
   Update README 
   Finish all routes 
-  Test API with client page
 
 */
 
@@ -42,6 +41,12 @@ router.get("/results", (req, res) => {
 router.get("/api/question", async (req, res) => {
   const questions = await req.db.from("questions").select("question_text");
   res.json({questions});
+});
+
+/* GET all answers based on question ID */ 
+router.get("/api/answer/:questionId", async (req, res) => {
+  const answers = await req.db.from("answers").select("answer_text").where("question_id", "=", req.params.questionId);
+  res.json({answers});
 });
 
 module.exports = router;
