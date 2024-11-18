@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-/* GET all personality test results */ 
+/* GET all personality test results */
 router.get("/results", (req, res) => {
   const results = [
     { title: "Front-End Developer", description: "Focuses on the user interface and user experience of web applications. They work with HTML, CSS, JavaScript, and frameworks like React or Angular." },
@@ -20,7 +20,33 @@ router.get("/results", (req, res) => {
   res.json(results);
 });
 
-/*
+/* GET all questions */
+router.get("/api/question", async (req, res) => {
+  const questions = await req.db.from("questions").select("question_text");
+  res.json({ questions });
+});
+
+/* GET all answers based on question ID */
+router.get("/api/answer/:questionId", async (req, res) => {
+  const answers = await req.db.from("answers").select("letter_of_choice", "answer_text").where("question_id", "=", req.params.questionId);
+  res.json({ answers });
+});
+
+const getQuestionCount = async (req) => {
+  const question_count = await req.db.from("questions").count("*");
+  return question_count[0]["count(*)"];
+}
+
+router.post("/result/calculate", async (req, res) => {
+  const { answers } = req.body;
+  console.log(answers);
+
+  const question_count = await getQuestionCount(req);
+  console.log(question_count);
+
+  const scores = { FED: 0, BED: 0, FSD: 0, DOE: 0, DBA: 0, GDV: 0 };
+
+  /*
 
   FOR REFERENCE: 
 
@@ -35,18 +61,38 @@ router.get("/results", (req, res) => {
   Update README 
   Finish all routes 
 
-*/
+  */
 
-/* GET all questions */ 
-router.get("/api/question", async (req, res) => {
-  const questions = await req.db.from("questions").select("question_text");
-  res.json({questions});
-});
+  for (let i = 0; i < question_count; ++i) {
+    const score_query = await req.db.from("answers")
+      .select("score_fed", "score_bed", "score_fsd", "score_doe", "score_dba", "score_gdv")
+      .where("question_id", "=", i + 1).andWhere("letter_of_choice", "=", answers[i]);
 
-/* GET all answers based on question ID */ 
-router.get("/api/answer/:questionId", async (req, res) => {
-  const answers = await req.db.from("answers").select("letter_of_choice", "answer_text").where("question_id", "=", req.params.questionId);
-  res.json({answers});
+
+    scores.FED += score_query[0].score_fed; 
+    scores.BED += score_query[0].score_bed; 
+    scores.FSD += score_query[0].score_fsd; 
+    scores.DOE += score_query[0].score_doe; 
+    scores.DBA += score_query[0].score_dba; 
+    scores.GDV += score_query[0].score_gdv; 
+  }
+
+  console.log(scores); 
+
+  let result = "FED"; 
+  let max = 0; 
+
+  for (const [key, value] of Object.entries(scores)) {
+    //console.log(key, value);
+    if(max < value)
+    {
+      result = key; 
+      max = value; 
+    }
+  }
+
+  console.log(result); 
+  return result; 
 });
 
 module.exports = router;
