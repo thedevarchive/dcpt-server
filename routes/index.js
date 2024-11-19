@@ -64,49 +64,55 @@ router.post("/result/calculate", async (req, res) => {
   */
 
   for (let i = 0; i < question_count; ++i) {
+    if (answers[i] === "") {
+      return res.json({
+        error: true,
+        message: `You did not answer question ${i + 1}.`,
+      });
+    }
+
     const score_query = await req.db.from("scores")
       .join("answers", "answers.answer_id", "=", "scores.answer_id")
       .select("scores.career_code", "scores.score")
       .where("answers.question_id", "=", i + 1)
-      .andWhere("answers.letter_of_choice", "=", answers[i]); 
+      .andWhere("answers.letter_of_choice", "=", answers[i]);
 
-    console.log(score_query); 
+    console.log(score_query);
 
     score_query.forEach((sq) => {
-      scores[sq.career_code] += sq.score; 
-    }); 
+      scores[sq.career_code] += sq.score;
+    });
   }
 
-  console.log(scores); 
+  console.log(scores);
 
-  let result = "FED"; 
-  let max = 0; 
+  let result = "FED";
+  let max = 0;
 
   for (const [key, value] of Object.entries(scores)) {
     //console.log(key, value);
-    if(max < value)
-    {
-      result = key; 
-      max = value; 
+    if (max < value) {
+      result = key;
+      max = value;
     }
   }
 
-  res.json({result}); 
+  res.json({ result });
 });
 
 router.get("/api/careers", async (req, res) => {
   const careers = await req.db.from("careers")
-    .select("career_name", "personality_description"); 
+    .select("career_name", "personality_description");
 
-  res.json({careers}); 
+  res.json({ careers });
 });
 
 router.get("/api/career/:careerCode", async (req, res) => {
   const result_query = await req.db.from("careers")
     .select("*")
-    .where("career_code", "=", req.params.careerCode); 
+    .where("career_code", "=", req.params.careerCode);
 
-  res.json(result_query[0]); 
+  res.json(result_query[0]);
 });
 
 module.exports = router;
