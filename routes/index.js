@@ -64,17 +64,17 @@ router.post("/result/calculate", async (req, res) => {
   */
 
   for (let i = 0; i < question_count; ++i) {
-    const score_query = await req.db.from("answers")
-      .select("score_fed", "score_bed", "score_fsd", "score_doe", "score_dba", "score_gdv")
-      .where("question_id", "=", i + 1).andWhere("letter_of_choice", "=", answers[i]);
+    const score_query = await req.db.from("scores")
+      .join("answers", "answers.answer_id", "=", "scores.answer_id")
+      .select("scores.career_code", "scores.score")
+      .where("answers.question_id", "=", i + 1)
+      .andWhere("answers.letter_of_choice", "=", answers[i]); 
 
+    console.log(score_query); 
 
-    scores.FED += score_query[0].score_fed; 
-    scores.BED += score_query[0].score_bed; 
-    scores.FSD += score_query[0].score_fsd; 
-    scores.DOE += score_query[0].score_doe; 
-    scores.DBA += score_query[0].score_dba; 
-    scores.GDV += score_query[0].score_gdv; 
+    score_query.forEach((sq) => {
+      scores[sq.career_code] += sq.score; 
+    }); 
   }
 
   console.log(scores); 
@@ -91,8 +91,7 @@ router.post("/result/calculate", async (req, res) => {
     }
   }
 
-  console.log(result); 
-  return result; 
+  res.json({result}); 
 });
 
 module.exports = router;
