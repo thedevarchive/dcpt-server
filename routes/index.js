@@ -94,4 +94,19 @@ router.post("/result/calculate", async (req, res) => {
   res.json({result}); 
 });
 
+router.get("/api/careers", async (req, res) => {
+  const careers = await req.db.from("careers")
+    .select("career_name", "personality_description"); 
+
+  res.json({careers}); 
+});
+
+router.get("/api/career/:careerCode", async (req, res) => {
+  const result_query = await req.db.from("careers")
+    .select("*")
+    .where("career_code", "=", req.params.careerCode); 
+
+  res.json(result_query[0]); 
+});
+
 module.exports = router;
