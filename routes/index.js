@@ -44,7 +44,7 @@ router.post("/result/calculate", async (req, res) => {
   const question_count = await getQuestionCount(req);
   console.log(question_count);
 
-  const scores = { FED: 0, BED: 0, FSD: 0, DOE: 0, DBA: 0, GDV: 0 };
+  const scores = { FED: 0, BED: 0, FSD: 0, DOE: 0, DBA: 0, GDV: 0, QAT: 0, MAD: 0, CSX: 0 };
 
   /*
 
@@ -56,6 +56,9 @@ router.post("/result/calculate", async (req, res) => {
   DOE = DevOps Engineer
   DBA = Database Administrator
   GDV = Game Developer
+  QAT = QA Tester / Quality Assurance Tester
+  MAD = Mobile App Developer
+  CSX = Cyber Security Expert
 
   TODO: 
   Update README 
