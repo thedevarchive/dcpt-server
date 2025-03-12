@@ -1,6 +1,6 @@
 # About this Project
 
-Server for the Dev Career Personality Test, a project inspired by peachnono's [Career Personality Test](https://github.com/peachnono/dev-personality-test). 
+Server for the [Dev Career Personality Test](https://github.com/thedevarchive/dev-career-personality-test), a project inspired by peachnono's [Career Personality Test](https://github.com/peachnono/dev-personality-test). 
 
 # How to Run
 
