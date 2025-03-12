@@ -4,7 +4,17 @@ Server for the Dev Career Personality Test, a project inspired by peachnono's [C
 
 # How to Run
 
-TBA
+First, import the .sql file in your database. Then, type
+
+### `npm install`
+
+to install its dependencies, then type
+
+### `nodemon`
+
+to start the server. 
+
+Then, use it along with the [Dev Career Personality Test](https://github.com/thedevarchive/dev-career-personality-test). 
 
 # How to Report Issues
 
