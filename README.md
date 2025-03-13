@@ -18,4 +18,4 @@ Then, use it along with the [Dev Career Personality Test](https://github.com/the
 
 # How to Report Issues
 
-Email me at amaengo@protonmail.com if you find any bugs in the program or have any issues running it. 
+Email me at amaengo@protonmail.com if you find any bugs in the program or have any issues running it.  
