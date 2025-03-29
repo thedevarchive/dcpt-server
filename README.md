@@ -4,7 +4,11 @@ Server for the [Dev Career Personality Test](https://github.com/thedevarchive/de
 
 # How to Run
 
-First, import the .sql file in your database. Then, type
+First, import the .sql file in your database.
+
+Then, create a .env file in the project directory. It must contain variables PORT and DB_PASSWORD. DB_PASSWORD must supply the password to the database containing the tables needed to run the app. 
+
+Finally, type
 
 ### `npm install`
 
