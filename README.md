@@ -4,7 +4,7 @@ Server for the [Dev Career Personality Test](https://github.com/thedevarchive/de
 
 # How to Run
 
-First, import the .sql file in your database.
+First, import the .sql file in your database. The database must have the same name as the one in the source code (default name is "dev_personality_test"). 
 
 Then, create a .env file in the project directory. It must contain variables PORT and DB_PASSWORD. DB_PASSWORD must supply the password to the database containing the tables needed to run the app. 
 
